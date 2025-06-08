@@ -480,26 +480,42 @@ const GlobalModal = () => {
   );
 };
 
+// Navbar Component
+const Navbar = () => {
+  return (
+    <nav className="bg-emerald-800 text-white p-4 sm:px-6 shadow-lg fixed w-full z-10 top-0">
+      <div className="container mx-auto flex items-center justify-between">
+        <h1 className="text-2xl font-bold font-inter tracking-tight">
+          Ecogreen Shop
+        </h1>
+      </div>
+    </nav>
+  );
+};
 
 // Main App component
 function App() {
   return (
     <CartProvider>
-      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-emerald-100 px-4 py-6 sm:p-8 font-inter"> {/* Adjusted padding */}
-        <header className="text-center mb-12">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-emerald-800 mb-4 tracking-tight"> {/* Responsive font size */}
-            🌱 Ecogreen Shop 🌱
-          </h1>
-          <p className="text-lg sm:text-xl text-gray-700"> {/* Responsive font size */}
-            Discover our exquisite collection of fresh flowers and elegant pots.
-          </p>
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-emerald-100 font-inter">
+        <Navbar /> {/* Added the Navbar component */}
+        {/* Enhanced Header Section */}
+        <header className="relative bg-gradient-to-r from-emerald-700 to-emerald-900 text-white text-center py-16 sm:py-24 px-4 shadow-xl">
+          <div className="container mx-auto max-w-4xl">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold mb-4 tracking-tight leading-tight">
+              🌱 Your Eco-Friendly Oasis 🌱
+            </h1>
+            <p className="text-xl sm:text-2xl text-emerald-100 opacity-90 mt-4">
+              Discover exquisite fresh flowers, elegant pots, and magnificent trees for a greener, happier home.
+            </p>
+          </div>
         </header>
 
-        <main className="container mx-auto grid grid-cols-1 gap-8 sm:gap-10"> {/* Removed lg:grid-cols-3 and lg:col-span-* */}
-          <div className="col-span-1"> {/* Explicitly setting to col-span-1 for clarity, though it's the default */}
+        <main className="container mx-auto grid grid-cols-1 gap-8 sm:gap-10 px-4 py-8"> {/* Adjusted padding-top and bottom padding */}
+          <div className="col-span-1">
             <ProductList />
           </div>
-          <div className="col-span-1"> {/* Explicitly setting to col-span-1 for clarity, though it's the default */}
+          <div className="col-span-1">
             <ShoppingCart />
           </div>
         </main>
