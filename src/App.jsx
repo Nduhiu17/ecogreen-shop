@@ -8,7 +8,10 @@ const useCart = () => {
   return useContext(CartContext);
 };
 
-// Dummy product data for florist shop
+/**
+ * Dummy product data for florist shop.
+ * In a real application, this data would likely come from an API or database.
+ */
 const products = [
   { id: 1, name: 'Red Roses Bouquet', price: 55.00, description: 'A timeless expression of deep affection and passion, our Red Roses Bouquet features a dozen premium, long-stemmed red roses carefully arranged with lush greenery. Each rose is hand-picked for its velvety petals and rich fragrance, making it an ideal gift for anniversaries, Valentine\'s Day, or any occasion where you want to convey profound love and admiration. Comes wrapped in eco-friendly paper.', category: 'flowers', flowerType: 'roses', imageUrl: 'https://placehold.co/300x200/B85042/ffffff?text=Red+Roses' },
   { id: 2, name: 'Mixed Spring Flowers', price: 42.50, description: 'Brighten any room with our enchanting Mixed Spring Flowers bouquet. This delightful arrangement features a vibrant medley of seasonal blooms such as cheerful tulips, fragrant hyacinths, and delicate daffodils. It\'s carefully crafted to bring the freshness and joy of spring indoors, perfect for celebrating new beginnings or simply adding a splash of natural beauty to your home. Each bouquet is unique, reflecting the best of what nature offers.', category: 'flowers', flowerType: 'mixed', imageUrl: 'https://placehold.co/300x200/A7D9B1/000000?text=Spring+Mix' },
@@ -482,12 +485,33 @@ const GlobalModal = () => {
 
 // Navbar Component
 const Navbar = () => {
+  const whatsappPhoneNumber = '254796515157'; // Your WhatsApp number
+  const whatsappMessage = 'Hello, I have a question about your eco-friendly products!'; // Pre-filled message
+
   return (
     <nav className="bg-emerald-800 text-white p-4 sm:px-6 shadow-lg fixed w-full z-10 top-0">
       <div className="container mx-auto flex items-center justify-between">
         <h1 className="text-2xl font-bold font-inter tracking-tight">
           Ecogreen Shop
         </h1>
+        {/* WhatsApp Contact Button */}
+        <a
+          href={`https://wa.me/${whatsappPhoneNumber}?text=${encodeURIComponent(whatsappMessage)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full flex items-center space-x-2 transition-all duration-200 shadow-md hover:shadow-lg"
+          title="Contact us on WhatsApp"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path d="M.999 23.003L2.73 17.65a8.97 8.97 0 01-1.34-4.887C1.39 6.84 6.84 1.39 13.007 1.39c3.08 0 5.96 1.2 8.16 3.393s3.39 5.08 3.39 8.16a8.97 8.97 0 01-1.34 4.887L23.003 23.003l-5.353-1.73a9.003 9.003 0 01-4.887 1.34c-6.16 0-11.61-5.45-11.61-11.61a8.97 8.97 0 011.34-4.887L.999 0 .999 23.003zM13.007 3.39c-5.06 0-9.21 4.15-9.21 9.21 0 1.95.6 3.76 1.63 5.25L3.447 21.55l3.227-1.047a7.22 7.22 0 004.887 1.34h.01c5.06 0 9.21-4.15 9.21-9.21s-4.15-9.21-9.21-9.21zM17.007 15.61c-.24 0-.48-.07-.69-.14l-1.92-1.22c-.14-.08-.3-.1-.45-.04l-1.12.35c-.24.08-.5.06-.72-.05-.23-.1-.4-.28-.5-.5l-.35-1.12c-.06-.15-.04-.31.04-.45l1.22-1.92c.07-.21.0-2.07-2.06-2.07-.24 0-.48-.07-.69-.14l-1.92-1.22c-.14-.08-.3-.1-.45-.04l-1.12.35c-.24.08-.5.06-.72-.05-.23-.1-.4-.28-.5-.5l-.35-1.12c-.06-.15-.04-.31.04-.45l1.22-1.92c.07-.21.0-2.07-2.06-2.07-.24 0-.48-.07-.69-.14l-1.92-1.22c-.14-.08-.3-.1-.45-.04l-1.12.35c-.24.08-.5.06-.72-.05-.23-.1-.4-.28-.5-.5l-.35-1.12c-.06-.15-.04-.31.04-.45l1.22-1.92c.07-.21.0-2.07-2.06-2.07" />
+          </svg>
+          <span className="hidden sm:inline">WhatsApp Us</span>
+        </a>
       </div>
     </nav>
   );
