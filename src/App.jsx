@@ -249,14 +249,14 @@ const ProductList = () => {
   )];
 
   return (
-    <section className="p-8 bg-white rounded-xl shadow-inner mb-8">
-      <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center font-inter">Our Eco-Friendly Collection</h2>
+    <section className="p-6 sm:p-8 bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 mb-8"> {/* Adjusted padding, shadow, and added hover */}
+      <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 text-center font-inter">Our Eco-Friendly Collection</h2>
 
       {/* Main Category Filter buttons */}
-      <div className="flex flex-wrap justify-center space-x-2 sm:space-x-4 mb-4">
+      <div className="flex flex-wrap justify-center space-x-2 sm:space-x-4 mb-4 gap-y-2"> {/* Added gap-y-2 for wrapping */}
         <button
           onClick={() => setCategoryFilter('all')}
-          className={`py-2 px-6 rounded-full font-medium transition-colors duration-200 ${
+          className={`py-2 px-4 sm:px-6 rounded-full text-sm sm:text-base font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 ${
             categoryFilter === 'all' ? 'bg-emerald-700 text-white shadow-md' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
           }`}
         >
@@ -264,7 +264,7 @@ const ProductList = () => {
         </button>
         <button
           onClick={() => setCategoryFilter('flowers')}
-          className={`py-2 px-6 rounded-full font-medium transition-colors duration-200 ${
+          className={`py-2 px-4 sm:px-6 rounded-full text-sm sm:text-base font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 ${
             categoryFilter === 'flowers' ? 'bg-emerald-700 text-white shadow-md' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
           }`}
         >
@@ -272,7 +272,7 @@ const ProductList = () => {
         </button>
         <button
           onClick={() => setCategoryFilter('flower_pots')}
-          className={`py-2 px-6 rounded-full font-medium transition-colors duration-200 ${
+          className={`py-2 px-4 sm:px-6 rounded-full text-sm sm:text-base font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 ${
             categoryFilter === 'flower_pots' ? 'bg-emerald-700 text-white shadow-md' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
           }`}
         >
@@ -280,7 +280,7 @@ const ProductList = () => {
         </button>
         <button
           onClick={() => setCategoryFilter('trees')} // New button for Trees
-          className={`py-2 px-6 rounded-full font-medium transition-colors duration-200 ${
+          className={`py-2 px-4 sm:px-6 rounded-full text-sm sm:text-base font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 ${
             categoryFilter === 'trees' ? 'bg-emerald-700 text-white shadow-md' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
           }`}
         >
@@ -290,11 +290,11 @@ const ProductList = () => {
 
       {/* Specific Flower Type Filter buttons (only visible when 'Flowers' category is selected) */}
       {categoryFilter === 'flowers' && (
-        <div className="flex flex-wrap justify-center space-x-2 sm:space-x-4 mb-8 mt-4">
+        <div className="flex flex-wrap justify-center space-x-2 sm:space-x-4 mb-8 mt-4 gap-y-2"> {/* Added gap-y-2 */}
           <button
             onClick={() => setTypeFilter('all')}
-            className={`py-2 px-4 rounded-full text-sm font-medium transition-colors duration-200 ${
-              typeFilter === 'all' ? 'bg-emerald-600 text-white' : 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
+            className={`py-2 px-4 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-300 ${
+              typeFilter === 'all' ? 'bg-emerald-600 text-white shadow-sm' : 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
             }`}
           >
             All Flowers
@@ -303,8 +303,8 @@ const ProductList = () => {
             <button
               key={type}
               onClick={() => setTypeFilter(type)}
-              className={`py-2 px-4 rounded-full text-sm font-medium transition-colors duration-200 ${
-                typeFilter === type ? 'bg-emerald-600 text-white' : 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
+              className={`py-2 px-4 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-300 ${
+                typeFilter === type ? 'bg-emerald-600 text-white shadow-sm' : 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
               }`}
             >
               {type.charAt(0).toUpperCase() + type.slice(1)} {/* Capitalize first letter */}
@@ -315,11 +315,11 @@ const ProductList = () => {
 
       {/* Specific Tree Type Filter buttons (only visible when 'Trees' category is selected) */}
       {categoryFilter === 'trees' && (
-        <div className="flex flex-wrap justify-center space-x-2 sm:space-x-4 mb-8 mt-4">
+        <div className="flex flex-wrap justify-center space-x-2 sm:space-x-4 mb-8 mt-4 gap-y-2"> {/* Added gap-y-2 */}
           <button
             onClick={() => setTypeFilter('all')}
-            className={`py-2 px-4 rounded-full text-sm font-medium transition-colors duration-200 ${
-              typeFilter === 'all' ? 'bg-emerald-600 text-white' : 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
+            className={`py-2 px-4 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-300 ${
+              typeFilter === 'all' ? 'bg-emerald-600 text-white shadow-sm' : 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
             }`}
           >
             All Trees
@@ -328,8 +328,8 @@ const ProductList = () => {
             <button
               key={type}
               onClick={() => setTypeFilter(type)}
-              className={`py-2 px-4 rounded-full text-sm font-medium transition-colors duration-200 ${
-                typeFilter === type ? 'bg-emerald-600 text-white' : 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
+              className={`py-2 px-4 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-300 ${
+                typeFilter === type ? 'bg-emerald-600 text-white shadow-sm' : 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
               }`}
             >
               {type.charAt(0).toUpperCase() + type.slice(1)} {/* Capitalize first letter */}
