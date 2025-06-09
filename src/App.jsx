@@ -175,8 +175,8 @@ const CartProvider = ({ children }) => {
 };
 
 // Product Card component
-const ProductCard = ({ product, onReadMoreClick }) => { // Added onReadMoreClick prop
-  const { addToCart } = useCart(); // Use cart context
+const ProductCard = ({ product, onReadMoreClick }) => {
+  const { addToCart } = useCart();
 
   const showReadMore = product.category === 'flowers' || product.category === 'trees';
 
@@ -197,26 +197,38 @@ const ProductCard = ({ product, onReadMoreClick }) => { // Added onReadMoreClick
       />
       <div className="p-6 flex flex-col flex-grow">
         <h3 className="text-xl font-semibold text-gray-800 mb-2 font-inter">{product.name}</h3>
-        {/* Made the description scrollable */}
         <p className="text-gray-600 text-sm mb-4 flex-grow max-h-24 overflow-y-auto pr-2">
           {product.description}
           {showReadMore && (
             <span
-              className="text-emerald-600 cursor-pointer hover:underline ml-1 font-medium inline-flex items-center"
-              onClick={() => onReadMoreClick(product)} // Call the passed function
+              className="text-emerald-600 cursor-pointer hover:underline ml-1 font-medium"
+              onClick={() => onReadMoreClick(product)}
             >
-              Get more info from our GREEN AI...
+                <span>Get More Details from our Green AI</span>
 
-              {/* AI symbol */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 mr-1 text-emerald-500"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <circle cx="10" cy="10" r="9" stroke="currentColor" strokeWidth="2" fill="none" />
-                <text x="10" y="15" textAnchor="middle" fontSize="10" fill="currentColor" fontFamily="Arial" fontWeight="bold">AI</text>
-              </svg>
+                <span className="inline-flex items-center space-x-1">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-7 h-7 text-emerald-700 inline-block align-middle ml-2"
+                  viewBox="0 0 32 32"
+                  fill="currentColor"
+                  aria-label="AI"
+                >
+                  <circle cx="16" cy="16" r="16" fill="#059669" />
+                  <text
+                    x="16"
+                    y="21"
+                    textAnchor="middle"
+                    fontSize="15"
+                    fontWeight="bold"
+                    fill="#fff"
+                    fontFamily="Inter, Arial, sans-serif"
+                    letterSpacing="2"
+                  >
+                    AI
+                  </text>
+                </svg>
+                </span>
             </span>
           )}
         </p>
@@ -247,7 +259,7 @@ const ProductCard = ({ product, onReadMoreClick }) => { // Added onReadMoreClick
 };
 
 // Product List component
-const ProductList = ({ onReadMoreClick }) => { // Receive onReadMoreClick
+const ProductList = ({ onReadMoreClick }) => {
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [typeFilter, setTypeFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
@@ -567,7 +579,7 @@ const Navbar = () => {
               viewBox="0 0 24 24"
               fill="currentColor"
             >
-              <path d="M.999 23.003L2.73 17.65a8.97 8.97 0 01-1.34-4.887C1.39 6.84 6.84 1.39 13.007 1.39c3.08 0 5.96 1.2 8.16 3.393s3.39 5.08 3.39 8.16a8.97 8.97 0 01-1.34 4.887L23.003 23.003l-5.353-1.73a9.003 9.003 0 01-4.887 1.34c-6.16 0-11.61-5.45-11.61-11.61a8.97 8.97 0 011.34-4.887L.999 0 .999 23.003zM13.007 3.39c-5.06 0-9.21 4.15-9.21 9.21 0 1.95.6 3.76 1.63 5.25L3.447 21.55l3.227-1.047a7.22 7.22 0 004.887 1.34h.01c5.06 0 9.21-4.15 9.21-9.21s-4.15-9.21-9.21-9.21zM17.007 15.61c-.24 0-.48-.07-.69-.14l-1.92-1.22c-.14-.08-.3-.1-.45-.04l-1.12.35c-.24.08-.5.06-.72-.05-.23-.1-.4-.28-.5-.5l-.35-1.12c-.06-.15-.04-.31.04-.45l1.22-1.92c.07-.21.0-2.07-2.06-2.07-.24 0-.48-.07-.69-.14l-1.92-1.22c-.14-.08-.3-.1-.45-.04l-1.12.35c-.24.08-.5.06-.72-.05-.23-.1-.4-.28-.5-.5l-.35-1.12c-.06-.15-.04-.31.04-.45l1.22-1.92c.07-.21.0-2.07-2.06-2.07" />
+              <path d="M.999 23.003L2.73 17.65a8.97 8.97 0 01-1.34-4.887C1.39 6.84 6.84 1.39 13.007 1.39c3.08 0 5.96 1.2 8.16-3.393s3.39 5.08 3.39 8.16a8.97 8.97 0 01-1.34 4.887L23.003 23.003l-5.353-1.73a9.003 9.003 0 01-4.887 1.34c-6.16 0-11.61-5.45-11.61-11.61a8.97 8.97 0 011.34-4.887L.999 0 .999 23.003zM13.007 3.39c-5.06 0-9.21 4.15-9.21 9.21 0 1.95.6 3.76 1.63 5.25L3.447 21.55l3.227-1.047a7.22 7.22 0 004.887 1.34h.01c5.06 0 9.21-4.15 9.21-9.21s-4.15-9.21-9.21-9.21zM17.007 15.61c-.24 0-.48-.07-.69-.14l-1.92-1.22c-.14-.08-.3-.1-.45-.04l-1.12.35c-.24.08-.5.06-.72-.05-.23-.1-.4-.28-.5-.5l-.35-1.12c-.06-.15-.04-.31.04-.45l1.22-1.92c.07-.21.0-2.07-2.06-2.07-.24 0-.48-.07-.69-.14l-1.92-1.22c-.14-.08-.3-.1-.45-.04l-1.12.35c-.24.08-.5.06-.72-.05-.23-.1-.4-.28-.5-.5l-.35-1.12c-.06-.15-.04-.31.04-.45l1.22-1.92c.07-.21.0-2.07-2.06-2.07" />
             </svg>
             <span className="hidden sm:inline">WhatsApp Us</span>
           </a>
@@ -623,8 +635,43 @@ const ProductDetailModal = ({ product, detailedDescription, isLoading, onClose }
   if (!product) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4 font-inter">
-      <div className="bg-white rounded-xl shadow-2xl p-6 sm:p-8 w-full max-w-lg lg:max-w-2xl max-h-[90vh] overflow-y-auto transform scale-95 opacity-0 animate-fade-in-up">
+    <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4 font-inter"> {/* Changed opacity to 60 */}
+      <style>
+        {`
+        @keyframes fadeInScaleUp {
+          from {
+            opacity: 0;
+            transform: scale(0.9);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+        .animate-fade-in-up {
+          animation: fadeInScaleUp 0.3s ease-out forwards;
+        }
+        /* Custom scrollbar for Webkit browsers */
+        .modal-description-scrollable::-webkit-scrollbar {
+          width: 8px;
+        }
+
+        .modal-description-scrollable::-webkit-scrollbar-track {
+          background: #f1f1f1;
+          border-radius: 10px;
+        }
+
+        .modal-description-scrollable::-webkit-scrollbar-thumb {
+          background: #888;
+          border-radius: 10px;
+        }
+
+        .modal-description-scrollable::-webkit-scrollbar-thumb:hover {
+          background: #555;
+        }
+        `}
+      </style>
+      <div className="bg-white rounded-xl shadow-2xl p-6 sm:p-8 w-full max-w-lg lg:max-w-2xl max-h-[90vh] overflow-y-auto animate-fade-in-up">
         <div className="flex justify-between items-start mb-4 border-b pb-3 border-gray-200">
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">{product.name} Details</h2>
           <button
@@ -647,7 +694,7 @@ const ProductDetailModal = ({ product, detailedDescription, isLoading, onClose }
             <p className="text-gray-600 text-lg mt-4">Fetching more details from the garden of knowledge...</p>
           </div>
         ) : (
-          <div className="text-gray-800 leading-relaxed space-y-4">
+          <div className="text-gray-800 leading-relaxed space-y-4 max-h-60 overflow-y-auto modal-description-scrollable pr-2">
             <h3 className="font-semibold text-lg mb-2">Extended Information:</h3>
             {detailedDescription ? (
               detailedDescription.split('\n').map((paragraph, index) => (
