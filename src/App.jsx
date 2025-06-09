@@ -113,7 +113,26 @@ const CartProvider = ({ children }) => {
   };
 
   /**
-   * Simulates the checkout process.
+   * Formats cart items into a string message for WhatsApp.
+   * @param {Array} items - The array of cart items.
+   * @param {number} total - The total price of items in the cart.
+   * @returns {string} - The formatted message.
+   */
+  const formatCartItemsForWhatsApp = (items, total) => {
+    if (items.length === 0) {
+      return "Hello, I'd like to inquire about your eco-friendly products!";
+    }
+    let message = "Hello, I'd like to place an order for the following items:\n\n";
+    items.forEach((item, index) => {
+      message += `${index + 1}. ${item.name} (Quantity: ${item.quantity}) - KSh ${item.price.toFixed(2)} each\n`;
+    });
+    message += `\nTotal: KSh ${total.toFixed(2)}`;
+    message += "\n\nPlease confirm availability and details.";
+    return message;
+  };
+
+  /**
+   * Handles the checkout process by sending cart details to WhatsApp.
    */
   const checkout = () => {
     if (cartItems.length === 0) {
@@ -122,9 +141,18 @@ const CartProvider = ({ children }) => {
       setTimeout(() => setShowModal(false), 3000);
       return;
     }
-    setModalMessage("Checkout successful! Thank you for your purchase!");
+
+    const whatsappPhoneNumber = '254796515157';
+    const message = formatCartItemsForWhatsApp(cartItems, calculateTotal());
+    const whatsappUrl = `https://wa.me/${whatsappPhoneNumber}?text=${encodeURIComponent(message)}`;
+
+    // Open WhatsApp in a new tab
+    window.open(whatsappUrl, '_blank');
+
+    // Show success message and clear cart after initiating WhatsApp chat
+    setModalMessage("Redirecting to WhatsApp to complete your order! Your cart has been cleared.");
     setShowModal(true);
-    setCartItems([]); // Clear the cart after checkout
+    setCartItems([]); // Clear the cart after initiating checkout
     setTimeout(() => setShowModal(false), 3000);
   };
 
@@ -508,7 +536,7 @@ const Navbar = () => {
             viewBox="0 0 24 24"
             fill="currentColor"
           >
-            <path d="M.999 23.003L2.73 17.65a8.97 8.97 0 01-1.34-4.887C1.39 6.84 6.84 1.39 13.007 1.39c3.08 0 5.96 1.2 8.16 3.393s3.39 5.08 3.39 8.16a8.97 8.97 0 01-1.34 4.887L23.003 23.003l-5.353-1.73a9.003 9.003 0 01-4.887 1.34c-6.16 0-11.61-5.45-11.61-11.61a8.97 8.97 0 011.34-4.887L.999 0 .999 23.003zM13.007 3.39c-5.06 0-9.21 4.15-9.21 9.21 0 1.95.6 3.76 1.63 5.25L3.447 21.55l3.227-1.047a7.22 7.22 0 004.887 1.34h.01c5.06 0 9.21-4.15 9.21-9.21s-4.15-9.21-9.21-9.21zM17.007 15.61c-.24 0-.48-.07-.69-.14l-1.92-1.22c-.14-.08-.3-.1-.45-.04l-1.12.35c-.24.08-.5.06-.72-.05-.23-.1-.4-.28-.5-.5l-.35-1.12c-.06-.15-.04-.31.04-.45l1.22-1.92c.07-.21.0-2.07-2.06-2.07-.24 0-.48-.07-.69-.14l-1.92-1.22c-.14-.08-.3-.1-.45-.04l-1.12.35c-.24.08-.5.06-.72-.05-.23-.1-.4-.28-.5-.5l-.35-1.12c-.06-.15-.04-.31.04-.45l1.22-1.92c.07-.21.0-2.07-2.06-2.07-.24 0-.48-.07-.69-.14l-1.92-1.22c-.14-.08-.3-.1-.45-.04l-1.12.35c-.24.08-.5.06-.72-.05-.23-.1-.4-.28-.5-.5l-.35-1.12c-.06-.15-.04-.31.04-.45l1.22-1.92c.07-.21.0-2.07-2.06-2.07" />
+            <path d="M.999 23.003L2.73 17.65a8.97 8.97 0 01-1.34-4.887C1.39 6.84 6.84 1.39 13.007 1.39c3.08 0 5.96 1.2 8.16 3.393s3.39 5.08 3.39 8.16a8.97 8.97 0 01-1.34 4.887L23.003 23.003l-5.353-1.73a9.003 9.003 0 01-4.887 1.34c-6.16 0-11.61-5.45-11.61-11.61a8.97 8.97 0 011.34-4.887L.999 0 .999 23.003zM13.007 3.39c-5.06 0-9.21 4.15-9.21 9.21 0 1.95.6 3.76 1.63 5.25L3.447 21.55l3.227-1.047a7.22 7.22 0 004.887 1.34h.01c5.06 0 9.21-4.15 9.21-9.21s-4.15-9.21-9.21-9.21zM17.007 15.61c-.24 0-.48-.07-.69-.14l-1.92-1.22c-.14-.08-.3-.1-.45-.04l-1.12.35c-.24.08-.5.06-.72-.05-.23-.1-.4-.28-.5-.5l-.35-1.12c-.06-.15-.04-.31.04-.45l1.22-1.92c.07-.21.0-2.07-2.06-2.07-.24 0-.48-.07-.69-.14l-1.92-1.22c-.14-.08-.3-.1-.45-.04l-1.12.35c-.24.08-.5.06-.72-.05-.23-.1-.4-.28-.5-.5l-.35-1.12c-.06-.15-.04-.31.04-.45l1.22-1.92c.07-.21.0-2.07-2.06-2.07" />
           </svg>
           <span className="hidden sm:inline">WhatsApp Us</span>
         </a>
@@ -520,7 +548,23 @@ const Navbar = () => {
 // Floating WhatsApp Button Component
 const FloatingWhatsAppButton = () => {
   const whatsappPhoneNumber = '254796515157';
-  const whatsappMessage = 'Hello, I have a question about your eco-friendly products!';
+  const { cartItems, calculateTotal } = useCart(); // Get cart items and calculateTotal
+
+  // Function to format cart items into a string message
+  const formatCartItemsForWhatsApp = (items, total) => {
+    if (items.length === 0) {
+      return "Hello, I'd like to inquire about your eco-friendly products!";
+    }
+    let message = "Hello, I'd like to place an order for the following items:\n\n";
+    items.forEach((item, index) => {
+      message += `${index + 1}. ${item.name} (Quantity: ${item.quantity}) - KSh ${item.price.toFixed(2)} each\n`;
+    });
+    message += `\nTotal: KSh ${total.toFixed(2)}`;
+    message += "\n\nPlease confirm availability and details.";
+    return message;
+  };
+
+  const whatsappMessage = formatCartItemsForWhatsApp(cartItems, calculateTotal());
 
   return (
     <a
@@ -536,7 +580,7 @@ const FloatingWhatsAppButton = () => {
         viewBox="0 0 24 24"
         fill="currentColor"
       >
-        <path d="M.999 23.003L2.73 17.65a8.97 8.97 0 01-1.34-4.887C1.39 6.84 6.84 1.39 13.007 1.39c3.08 0 5.96 1.2 8.16 3.393s3.39 5.08 3.39 8.16a8.97 8.97 0 01-1.34 4.887L23.003 23.003l-5.353-1.73a9.003 9.003 0 01-4.887 1.34c-6.16 0-11.61-5.45-11.61-11.61a8.97 8.97 0 011.34-4.887L.999 0 .999 23.003zM13.007 3.39c-5.06 0-9.21 4.15-9.21 9.21 0 1.95.6 3.76 1.63 5.25L3.447 21.55l3.227-1.047a7.22 7.22 0 004.887 1.34h.01c5.06 0 9.21-4.15 9.21-9.21s-4.15-9.21-9.21-9.21zM17.007 15.61c-.24 0-.48-.07-.69-.14l-1.92-1.22c-.14-.08-.3-.1-.45-.04l-1.12.35c-.24.08-.5.06-.72-.05-.23-.1-.4-.28-.5-.5l-.35-1.12c-.06-.15-.04-.31.04-.45l1.22-1.92c.07-.21.0-2.07-2.06-2.07-.24 0-.48-.07-.69-.14l-1.92-1.22c-.14-.08-.3-.1-.45-.04l-1.12.35c-.24.08-.5.06-.72-.05-.23-.1-.4-.28-.5-.5l-.35-1.12c-.06-.15-.04-.31.04-.45l1.22-1.92c.07-.21.0-2.07-2.06-2.07-.24 0-.48-.07-.69-.14l-1.92-1.22c-.14-.08-.3-.1-.45-.04l-1.12.35c-.24.08-.5.06-.72-.05-.23-.1-.4-.28-.5-.5l-.35-1.12c-.06-.15-.04-.31.04-.45l1.22-1.92c.07-.21.0-2.07-2.06-2.07" />
+        <path d="M.999 23.003L2.73 17.65a8.97 8.97 0 01-1.34-4.887C1.39 6.84 6.84 1.39 13.007 1.39c3.08 0 5.96 1.2 8.16-3.393s3.39 5.08 3.39 8.16a8.97 8.97 0 01-1.34 4.887L23.003 23.003l-5.353-1.73a9.003 9.003 0 01-4.887 1.34c-6.16 0-11.61-5.45-11.61-11.61a8.97 8.97 0 011.34-4.887L.999 0 .999 23.003zM13.007 3.39c-5.06 0-9.21 4.15-9.21 9.21 0 1.95.6 3.76 1.63 5.25L3.447 21.55l3.227-1.047a7.22 7.22 0 004.887 1.34h.01c5.06 0 9.21-4.15 9.21-9.21s-4.15-9.21-9.21-9.21zM17.007 15.61c-.24 0-.48-.07-.69-.14l-1.92-1.22c-.14-.08-.3-.1-.45-.04l-1.12.35c-.24.08-.5.06-.72-.05-.23-.1-.4-.28-.5-.5l-.35-1.12c-.06-.15-.04-.31.04-.45l1.22-1.92c.07-.21.0-2.07-2.06-2.07-.24 0-.48-.07-.69-.14l-1.92-1.22c-.14-.08-.3-.1-.45-.04l-1.12.35c-.24.08-.5.06-.72-.05-.23-.1-.4-.28-.5-.5l-.35-1.12c-.06-.15-.04-.31.04-.45l1.22-1.92c.07-.21.0-2.07-2.06-2.07" />
       </svg>
     </a>
   );
