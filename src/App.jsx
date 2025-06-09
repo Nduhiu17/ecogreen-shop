@@ -19,7 +19,7 @@ const products = [
   { id: 4, name: 'Succulent Garden Pot', price: 35.00, description: 'Create your own desert oasis with our easy-care Succulent Garden Pot. This charming arrangement features a curated selection of various drought-tolerant succulents, including Echeveria, Haworthia, and Sedum, nestled in a contemporary concrete pot. Perfect for busy individuals or those new to plant care, this miniature garden requires minimal watering and brings a touch of natural artistry to desks, windowsills, or coffee tables. A unique gift for any plant enthusiast!', category: 'flower_pots', imageUrl: 'https://placehold.co/300x200/94A68F/000000?text=Succulent+Pot' },
   { id: 5, name: 'Sunflower Sunshine Bouquet', price: 48.00, description: 'Radiate happiness with our Sunflower Sunshine Bouquet. This vibrant arrangement showcases bold, golden sunflowers, known for their large, striking heads and cheerful disposition. Symbolizing adoration, loyalty, and longevity, sunflowers are perfect for brightening someone\'s day, celebrating friendships, or adding a burst of summer joy to any occasion. Hand-tied with seasonal greenery for a truly magnificent display.', category: 'flowers', flowerType: 'sunflowers', imageUrl: 'https://placehold.co/300x200/F0E68C/000000?text=Sunflowers' },
   { id: 6, name: 'Lavender & Herb Pot', price: 28.00, description: 'Bring the calming scents of nature into your home with our Lavender & Herb Pot. This delightful planter combines aromatic lavender with essential culinary herbs like rosemary and thyme, creating a fragrant and functional mini-garden. Ideal for sunny kitchen windows or outdoor patios, it provides fresh ingredients for cooking and a soothing aroma that promotes relaxation. A thoughtful gift for home chefs and garden lovers alike.', category: 'flower_pots', imageUrl: 'https://placehold.co/300x200/C4C7B8/000000?text=Lavender+Pot' },
-  { id: 7, name: 'Lily Serenity Bouquet', price: 60.00, 'description': 'Experience tranquility with our exquisite Lily Serenity Bouquet. This elegant arrangement features pristine white lilies, symbolizing purity, rebirth, and peace. Their majestic blooms and subtle fragrance make them a profound choice for expressing sympathy, celebrating spiritual milestones, or simply bringing a sense of calm sophistication to any setting. Expertly arranged with complementary foliage.', category: 'flowers', flowerType: 'lilies', imageUrl: 'https://placehold.co/300x200/F5F5DC/000000?text=Lilies' },
+  { id: 7, name: 'Lily Serenity Bouquet', price: 60.00, description: 'Experience tranquility with our exquisite Lily Serenity Bouquet. This elegant arrangement features pristine white lilies, symbolizing purity, rebirth, and peace. Their majestic blooms and subtle fragrance make them a profound choice for expressing sympathy, celebrating spiritual milestones, or simply bringing a sense of calm sophistication to any setting. Expertly arranged with complementary foliage.', category: 'flowers', flowerType: 'lilies', imageUrl: 'https://placehold.co/300x200/F5F5DC/000000?text=Lilies' },
   { id: 8, name: 'Terracotta Planter', price: 22.00, description: 'Embrace classic gardening with our breathable Terracotta Planter. Made from natural, porous clay, this pot allows for excellent air circulation and drainage, promoting healthier root growth for a wide variety of plants. Its timeless design and earthy tone blend seamlessly with any decor, making it a versatile choice for both indoor and outdoor gardening projects. Available in various sizes to suit your needs.', category: 'flower_pots', imageUrl: 'https://placehold.co/300x200/D2B48C/000000?text=Terracotta+Pot' },
   { id: 9, name: 'Carnation Cheer Bouquet', price: 38.00, description: 'Inject a burst of vibrant energy with our Carnation Cheer Bouquet. Featuring a lively mix of multi-colored carnations, known for their ruffled petals and impressive longevity, this bouquet is perfect for cheering up a friend, celebrating a birthday, or simply adding a festive touch to your day. Carnations are versatile and long-lasting, offering sustained beauty and a pleasant, mild fragrance.', category: 'flowers', flowerType: 'carnations', imageUrl: 'https://placehold.co/300x200/FFB6C1/000000?text=Carnations' },
   { id: 10, name: 'Ceramic Pot - Small', price: 15.00, description: 'Discover the perfect home for your mini plants with our Small Ceramic Pot. This compact, glazed ceramic pot boasts a smooth finish and a minimalist design, making it an ideal choice for succulents, cacti, or tiny floral arrangements. Its durable construction ensures longevity, while its small size makes it perfect for desks, windowsills, or as charming party favors. Available in various appealing colors.', category: 'flower_pots', imageUrl: 'https://placehold.co/300x200/C0C0C0/000000?text=Small+Pot' },
@@ -175,32 +175,52 @@ const CartProvider = ({ children }) => {
 };
 
 // Product Card component
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, onReadMoreClick }) => { // Added onReadMoreClick prop
   const { addToCart } = useCart(); // Use cart context
 
+  const showReadMore = product.category === 'flowers' || product.category === 'trees';
+
   return (
-    <div className="bg-white rounded-xl shadow-xl hover:shadow-2xl overflow-hidden transform transition-all duration-300 flex flex-col hover:ring-2 hover:ring-emerald-300"> {/* Enhanced shadow and hover effect */}
+    <div className="bg-white rounded-xl shadow-xl hover:shadow-2xl overflow-hidden transform transition-all duration-300 flex flex-col hover:ring-2 hover:ring-emerald-300">
       <img
         src={product.imageUrl}
         alt={product.name}
-        className="w-full h-48 object-cover" // Fixed height for image
+        className="w-full h-48 object-cover"
         onError={(e) => {
           e.target.onerror = null;
-          // Fallback to a category-specific placeholder if the image fails to load
           let placeholderText = '';
           if (product.category === 'flowers') placeholderText = 'Flower';
           else if (product.category === 'flower_pots') placeholderText = 'Pot';
           else if (product.category === 'trees') placeholderText = 'Tree';
-          e.target.src = `https://placehold.co/300x200/047857/ffffff?text=${placeholderText}`; // Darker emerald for placeholder
+          e.target.src = `https://placehold.co/300x200/047857/ffffff?text=${placeholderText}`;
         }}
       />
       <div className="p-6 flex flex-col flex-grow">
         <h3 className="text-xl font-semibold text-gray-800 mb-2 font-inter">{product.name}</h3>
-        {/* Adjusted description text size and added overflow handling for very long descriptions */}
-        <p className="text-gray-600 text-sm mb-4 flex-grow overflow-hidden text-ellipsis max-h-24">
+        {/* Made the description scrollable */}
+        <p className="text-gray-600 text-sm mb-4 flex-grow max-h-24 overflow-y-auto pr-2">
           {product.description}
+          {showReadMore && (
+            <span
+              className="text-emerald-600 cursor-pointer hover:underline ml-1 font-medium inline-flex items-center"
+              onClick={() => onReadMoreClick(product)} // Call the passed function
+            >
+              Get more info from our GREEN AI...
+
+              {/* AI symbol */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4 mr-1 text-emerald-500"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <circle cx="10" cy="10" r="9" stroke="currentColor" strokeWidth="2" fill="none" />
+                <text x="10" y="15" textAnchor="middle" fontSize="10" fill="currentColor" fontFamily="Arial" fontWeight="bold">AI</text>
+              </svg>
+            </span>
+          )}
         </p>
-        <p className="text-gray-900 text-lg font-bold mb-4">KSh {product.price.toFixed(2)}</p> {/* Changed currency symbol */}
+        <p className="text-gray-900 text-lg font-bold mb-4">KSh {product.price.toFixed(2)}</p>
         <button
           onClick={() => addToCart(product)}
           className="w-full bg-emerald-600 text-white py-3 px-4 rounded-lg font-medium text-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center justify-center space-x-2"
@@ -227,13 +247,12 @@ const ProductCard = ({ product }) => {
 };
 
 // Product List component
-const ProductList = () => {
-  const [categoryFilter, setCategoryFilter] = useState('all'); // State for main category filter (all, flowers, flower_pots, trees)
-  const [typeFilter, setTypeFilter] = useState('all'); // State for specific type filter (flowerType or treeType)
-  const [currentPage, setCurrentPage] = useState(1); // State for current page
-  const itemsPerPage = 8; // Number of items to display per page
+const ProductList = ({ onReadMoreClick }) => { // Receive onReadMoreClick
+  const [categoryFilter, setCategoryFilter] = useState('all');
+  const [typeFilter, setTypeFilter] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
 
-  // Filter products based on the selected category and specific type (flowerType or treeType)
   const filteredProducts = products.filter(product => {
     const matchesCategory = categoryFilter === 'all' || product.category === categoryFilter;
 
@@ -241,50 +260,43 @@ const ProductList = () => {
     if (categoryFilter === 'flowers' && typeFilter !== 'all') {
       matchesType = product.flowerType === typeFilter;
     } else if (categoryFilter === 'trees' && typeFilter !== 'all') {
-      matchesType = product.treeType === typeFilter; // Filter by treeType
+      matchesType = product.treeType === typeFilter;
     }
 
     return matchesCategory && matchesType;
   });
 
-  // Calculate total pages for pagination based on filtered products
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
-  // Get products for the current page
   const paginatedProducts = filteredProducts.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
-  // Reset page to 1 and typeFilter whenever category filter changes
   useEffect(() => {
     setCurrentPage(1);
     setTypeFilter('all');
   }, [categoryFilter]);
 
-  // Reset page to 1 whenever specific type filter changes
   useEffect(() => {
     setCurrentPage(1);
   }, [typeFilter]);
 
-  // Get unique flower types for filter buttons
   const uniqueFlowerTypes = [...new Set(products
     .filter(p => p.category === 'flowers')
     .map(p => p.flowerType)
   )];
 
-  // Get unique tree types for filter buttons
   const uniqueTreeTypes = [...new Set(products
     .filter(p => p.category === 'trees')
     .map(p => p.treeType)
   )];
 
   return (
-    <section className="p-6 sm:p-8 bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 mb-8"> {/* Adjusted padding, shadow, and added hover */}
+    <section className="p-6 sm:p-8 bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 mb-8">
       <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 text-center font-inter">Our Eco-Friendly Collection</h2>
 
-      {/* Main Category Filter buttons */}
-      <div className="flex flex-wrap justify-center space-x-2 sm:space-x-4 mb-4 gap-y-2"> {/* Added gap-y-2 for wrapping */}
+      <div className="flex flex-wrap justify-center space-x-2 sm:space-x-4 mb-4 gap-y-2">
         <button
           onClick={() => setCategoryFilter('all')}
           className={`py-2 px-4 sm:px-6 rounded-full text-sm sm:text-base font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 ${
@@ -310,7 +322,7 @@ const ProductList = () => {
           Flower Pots
         </button>
         <button
-          onClick={() => setCategoryFilter('trees')} // New button for Trees
+          onClick={() => setCategoryFilter('trees')}
           className={`py-2 px-4 sm:px-6 rounded-full text-sm sm:text-base font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 ${
             categoryFilter === 'trees' ? 'bg-emerald-700 text-white shadow-md' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
           }`}
@@ -319,9 +331,8 @@ const ProductList = () => {
         </button>
       </div>
 
-      {/* Specific Flower Type Filter buttons (only visible when 'Flowers' category is selected) */}
       {categoryFilter === 'flowers' && (
-        <div className="flex flex-wrap justify-center space-x-2 sm:space-x-4 mb-8 mt-4 gap-y-2"> {/* Added gap-y-2 */}
+        <div className="flex flex-wrap justify-center space-x-2 sm:space-x-4 mb-8 mt-4 gap-y-2">
           <button
             onClick={() => setTypeFilter('all')}
             className={`py-2 px-4 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-300 ${
@@ -338,15 +349,14 @@ const ProductList = () => {
                 typeFilter === type ? 'bg-emerald-600 text-white shadow-sm' : 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
               }`}
             >
-              {type.charAt(0).toUpperCase() + type.slice(1)} {/* Capitalize first letter */}
+              {type.charAt(0).toUpperCase() + type.slice(1)}
             </button>
           ))}
         </div>
       )}
 
-      {/* Specific Tree Type Filter buttons (only visible when 'Trees' category is selected) */}
       {categoryFilter === 'trees' && (
-        <div className="flex flex-wrap justify-center space-x-2 sm:space-x-4 mb-8 mt-4 gap-y-2"> {/* Added gap-y-2 */}
+        <div className="flex flex-wrap justify-center space-x-2 sm:space-x-4 mb-8 mt-4 gap-y-2">
           <button
             onClick={() => setTypeFilter('all')}
             className={`py-2 px-4 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-300 ${
@@ -363,7 +373,7 @@ const ProductList = () => {
                 typeFilter === type ? 'bg-emerald-600 text-white shadow-sm' : 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
               }`}
             >
-              {type.charAt(0).toUpperCase() + type.slice(1)} {/* Capitalize first letter */}
+              {type.charAt(0).toUpperCase() + type.slice(1)}
             </button>
           ))}
         </div>
@@ -372,14 +382,13 @@ const ProductList = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {paginatedProducts.length > 0 ? (
           paginatedProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product.id} product={product} onReadMoreClick={onReadMoreClick} />
           ))
         ) : (
           <p className="col-span-full text-center text-gray-600 text-lg">No products found matching your filter.</p>
         )}
       </div>
 
-      {/* Pagination Controls */}
       {totalPages > 1 && (
         <div className="flex justify-center items-center space-x-2 mt-8">
           <button
@@ -415,30 +424,30 @@ const ProductList = () => {
 
 // Cart Item component
 const CartItem = ({ item }) => {
-  const { updateQuantity, removeFromCart } = useCart(); // Use cart context
+  const { updateQuantity, removeFromCart } = useCart();
 
   return (
     <div className="flex items-center justify-between bg-white p-4 rounded-lg shadow-sm mb-4">
-      <div className="flex items-center space-x-4 flex-grow"> {/* Added flex-grow */}
+      <div className="flex items-center space-x-4 flex-grow">
         <img
           src={item.imageUrl}
           alt={item.name}
-          className="w-20 h-20 object-cover rounded-md flex-shrink-0" // Added flex-shrink-0
+          className="w-20 h-20 object-cover rounded-md flex-shrink-0"
           onError={(e) => {
             e.target.onerror = null;
             let placeholderText = '';
             if (item.category === 'flowers') placeholderText = 'Flower';
             else if (item.category === 'flower_pots') placeholderText = 'Pot';
             else if (item.category === 'trees') placeholderText = 'Tree';
-            e.target.src = `https://placehold.co/80x80/047857/ffffff?text=${placeholderText}`; // Darker emerald for placeholder
+            e.target.src = `https://placehold.co/80x80/047857/ffffff?text=${placeholderText}`;
           }}
         />
-        <div className="flex-grow min-w-0"> {/* Added min-w-0 to allow text to shrink */}
-          <h4 className="font-semibold text-lg text-gray-800 mb-1 truncate font-inter">{item.name}</h4> {/* Added truncate */}
-          <p className="text-gray-600">KSh {item.price.toFixed(2)}</p> {/* Changed currency symbol */}
+        <div className="flex-grow min-w-0">
+          <h4 className="font-semibold text-lg text-gray-800 mb-1 truncate font-inter">{item.name}</h4>
+          <p className="text-gray-600">KSh {item.price.toFixed(2)}</p>
         </div>
       </div>
-      <div className="flex items-center space-x-3 flex-shrink-0 ml-4"> {/* Added flex-shrink-0 and ml-4 */}
+      <div className="flex items-center space-x-3 flex-shrink-0 ml-4">
         <button
           onClick={() => updateQuantity(item.id, item.quantity - 1)}
           className="bg-gray-200 text-gray-700 px-3 py-1 rounded-md hover:bg-gray-300 transition duration-150 text-sm"
@@ -465,7 +474,7 @@ const CartItem = ({ item }) => {
 
 // Shopping Cart component
 const ShoppingCart = () => {
-  const { cartItems, calculateTotal, checkout } = useCart(); // Use cart context
+  const { cartItems, calculateTotal, checkout } = useCart();
 
   return (
     <section className="p-8 bg-white rounded-xl shadow-inner">
@@ -474,16 +483,15 @@ const ShoppingCart = () => {
         <p className="text-center text-gray-600 text-lg">Your basket is empty. Start adding some beautiful items!</p>
       ) : (
         <>
-          <div className="mb-6 max-h-96 overflow-y-auto pr-2"> {/* Added scroll for many items */}
+          <div className="mb-6 max-h-96 overflow-y-auto pr-2">
             {cartItems.map((item) => (
               <CartItem key={item.id} item={item} />
             ))}
           </div>
-          {/* Updated checkout section for responsiveness and visual appeal */}
           <div className="flex flex-col md:flex-row justify-between items-center border-t border-gray-200 pt-6 mt-6 gap-4">
             <h3 className="text-3xl font-extrabold text-emerald-800 font-inter text-center md:text-left w-full md:w-auto">
               Total: KSh {calculateTotal().toFixed(2)}
-            </h3> {/* Changed currency symbol, increased font size, and added text alignment for responsiveness */}
+            </h3>
             <button
               onClick={checkout}
               className="w-full md:w-auto bg-emerald-700 text-white py-4 px-8 rounded-lg font-bold text-xl hover:bg-emerald-800 transition duration-200 shadow-lg transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-emerald-300 focus:ring-opacity-75"
@@ -514,8 +522,8 @@ const GlobalModal = () => {
 
 // Navbar Component
 const Navbar = () => {
-  const whatsappPhoneNumber = '254796515157'; // Your WhatsApp number
-  const whatsappMessage = 'Hello, I have a question about your eco-friendly products!'; // Pre-filled message
+  const whatsappPhoneNumber = '254796515157';
+  const whatsappMessage = 'Hello, I have a question about your eco-friendly products!';
   const phoneNumber = '+254796515157';
 
   return (
@@ -524,8 +532,7 @@ const Navbar = () => {
         <h1 className="text-2xl font-bold font-inter tracking-tight">
           Ecogreen Shop
         </h1>
-        <div className="flex items-center space-x-4"> {/* Container for phone and WhatsApp button */}
-          {/* Phone Number Link */}
+        <div className="flex items-center space-x-4">
           <a
             href={`tel:${phoneNumber}`}
             className="text-white text-sm sm:text-base hover:text-emerald-200 transition-colors duration-200 flex items-center space-x-1"
@@ -545,9 +552,8 @@ const Navbar = () => {
                 d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
               />
             </svg>
-            <span className="hidden md:inline">{phoneNumber}</span> {/* Show number on medium screens and up */}
+            <span className="hidden md:inline">{phoneNumber}</span>
           </a>
-          {/* WhatsApp Contact Button in Navbar */}
           <a
             href={`https://wa.me/${whatsappPhoneNumber}?text=${encodeURIComponent(whatsappMessage)}`}
             target="_blank"
@@ -574,7 +580,7 @@ const Navbar = () => {
 // Floating WhatsApp Button Component
 const FloatingWhatsAppButton = () => {
   const whatsappPhoneNumber = '254796515157';
-  const { cartItems, calculateTotal } = useCart(); // Get cart items and calculateTotal
+  const { cartItems, calculateTotal } = useCart();
 
   // Function to format cart items into a string message
   const formatCartItemsForWhatsApp = (items, total) => {
@@ -602,7 +608,7 @@ const FloatingWhatsAppButton = () => {
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        className="h-8 w-8 text-white" // Increased icon size for better visibility
+        className="h-8 w-8 text-white"
         viewBox="0 0 24 24"
         fill="currentColor"
       >
@@ -611,6 +617,61 @@ const FloatingWhatsAppButton = () => {
     </a>
   );
 };
+
+// New ProductDetailModal Component
+const ProductDetailModal = ({ product, detailedDescription, isLoading, onClose }) => {
+  if (!product) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4 font-inter">
+      <div className="bg-white rounded-xl shadow-2xl p-6 sm:p-8 w-full max-w-lg lg:max-w-2xl max-h-[90vh] overflow-y-auto transform scale-95 opacity-0 animate-fade-in-up">
+        <div className="flex justify-between items-start mb-4 border-b pb-3 border-gray-200">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">{product.name} Details</h2>
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-800 text-3xl font-bold transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-300 rounded-full p-1"
+            aria-label="Close"
+          >
+            &times;
+          </button>
+        </div>
+
+        <div className="mb-4 text-gray-700">
+          <h3 className="font-semibold text-lg mb-2">Brief Description:</h3>
+          <p>{product.description}</p>
+        </div>
+
+        {isLoading ? (
+          <div className="flex flex-col justify-center items-center h-48">
+            <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-emerald-500"></div>
+            <p className="text-gray-600 text-lg mt-4">Fetching more details from the garden of knowledge...</p>
+          </div>
+        ) : (
+          <div className="text-gray-800 leading-relaxed space-y-4">
+            <h3 className="font-semibold text-lg mb-2">Extended Information:</h3>
+            {detailedDescription ? (
+              detailedDescription.split('\n').map((paragraph, index) => (
+                paragraph.trim() !== '' && <p key={index} className="mb-2">{paragraph.trim()}</p>
+              ))
+            ) : (
+              <p className="text-gray-600">No extended details available at the moment.</p>
+            )}
+          </div>
+        )}
+
+        <div className="mt-6 pt-4 border-t border-gray-200 text-right">
+          <button
+            onClick={onClose}
+            className="bg-emerald-600 text-white py-2 px-6 rounded-lg font-medium hover:bg-emerald-700 transition duration-200 shadow-md focus:outline-none focus:ring-2 focus:ring-emerald-300"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 
 // Footer Component
 const Footer = () => {
@@ -680,7 +741,7 @@ const Footer = () => {
             </a>
           </div>
           <p className="text-emerald-200 text-sm">
-            Email: info@ecogreencontractors.solutions
+            Email: info@ecogreenshop.com
           </p>
           <p className="text-emerald-200 text-sm mt-1">
             Phone: +254796515157
@@ -700,11 +761,55 @@ const Footer = () => {
 
 // Main App component
 function App() {
+  const [selectedProductForDetails, setSelectedProductForDetails] = useState(null);
+  const [detailedDescription, setDetailedDescription] = useState('');
+  const [isLoadingDetails, setIsLoadingDetails] = useState(false);
+
+  const fetchProductDetailsAndShowModal = async (product) => {
+    setSelectedProductForDetails(product);
+    setDetailedDescription('');
+    setIsLoadingDetails(true);
+
+    try {
+      const prompt = `Give me more detailed information about this product: ${product.name} - ${product.description}. Focus on its characteristics, care instructions, ideal environment, and common uses. Provide about 3-4 paragraphs of text.`;
+      let chatHistory = [];
+      chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+      const payload = { contents: chatHistory };
+      const apiKey = "";
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const result = await response.json();
+
+      if (result.candidates && result.candidates.length > 0 &&
+          result.candidates[0].content && result.candidates[0].content.parts &&
+          result.candidates[0].content.parts.length > 0) {
+        const text = result.candidates[0].content.parts[0].text;
+        setDetailedDescription(text);
+      } else {
+        setDetailedDescription("Could not fetch more details at this moment. Please try again later.");
+      }
+    } catch (error) {
+      console.error("Error fetching detailed description:", error);
+      setDetailedDescription("Failed to load more details due to a network error.");
+    } finally {
+      setIsLoadingDetails(false);
+    }
+  };
+
+  const closeProductDetailModal = () => {
+    setSelectedProductForDetails(null);
+    setDetailedDescription('');
+  };
+
   return (
     <CartProvider>
-      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-emerald-100 font-inter flex flex-col"> {/* Added flex-col to enable footer to push to bottom */}
-        <Navbar /> {/* Added the Navbar component */}
-        {/* Enhanced Header Section */}
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-emerald-100 font-inter flex flex-col">
+        <Navbar />
         <header className="relative bg-gradient-to-r from-emerald-700 to-emerald-900 text-white text-center py-16 sm:py-24 px-4 shadow-xl">
           <div className="container mx-auto max-w-4xl">
             <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold mb-4 tracking-tight leading-tight">
@@ -716,17 +821,25 @@ function App() {
           </div>
         </header>
 
-        <main className="container mx-auto grid grid-cols-1 gap-8 sm:gap-10 px-4 py-8 flex-grow"> {/* Added flex-grow */}
+        <main className="container mx-auto grid grid-cols-1 gap-8 sm:gap-10 px-4 py-8 flex-grow">
           <div className="col-span-1">
-            <ProductList />
+            <ProductList onReadMoreClick={fetchProductDetailsAndShowModal} />
           </div>
           <div className="col-span-1">
             <ShoppingCart />
           </div>
         </main>
         <GlobalModal />
-        <FloatingWhatsAppButton /> {/* Add the floating WhatsApp button here */}
-        <Footer /> {/* Add the Footer component here */}
+        <FloatingWhatsAppButton />
+        <Footer />
+        {selectedProductForDetails && (
+          <ProductDetailModal
+            product={selectedProductForDetails}
+            detailedDescription={detailedDescription}
+            isLoading={isLoadingDetails}
+            onClose={closeProductDetailModal}
+          />
+        )}
       </div>
     </CartProvider>
   );
