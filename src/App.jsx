@@ -680,7 +680,7 @@ const Footer = () => {
             </a>
           </div>
           <p className="text-emerald-200 text-sm">
-            Email: info@ecogreenshop.com
+            Email: info@ecogreencontractors.solutions
           </p>
           <p className="text-emerald-200 text-sm mt-1">
             Phone: +254796515157
