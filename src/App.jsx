@@ -587,11 +587,97 @@ const FloatingWhatsAppButton = () => {
   );
 };
 
+// Footer Component
+const Footer = () => {
+  return (
+    <footer className="bg-emerald-900 text-white py-10 px-4 sm:px-6 mt-12 shadow-inner">
+      <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+        {/* Company Info */}
+        <div className="mb-6 md:mb-0">
+          <h4 className="text-xl font-bold mb-4 font-inter">Ecogreen Shop</h4>
+          <p className="text-emerald-200 text-sm">
+            Your trusted source for sustainable plants and gardening essentials.
+            <br />
+            Growing green, living serene.
+          </p>
+        </div>
+
+        {/* Quick Links */}
+        <div className="mb-6 md:mb-0">
+          <h4 className="text-xl font-bold mb-4 font-inter">Quick Links</h4>
+          <ul className="space-y-2">
+            <li>
+              <a href="#" className="text-emerald-200 hover:text-emerald-50 transition-colors duration-200 text-sm">
+                About Us
+              </a>
+            </li>
+            <li>
+              <a href="#" className="text-emerald-200 hover:text-emerald-50 transition-colors duration-200 text-sm">
+                Contact Us
+              </a>
+            </li>
+            <li>
+              <a href="#" className="text-emerald-200 hover:text-emerald-50 transition-colors duration-200 text-sm">
+                Privacy Policy
+              </a>
+            </li>
+            <li>
+              <a href="#" className="text-emerald-200 hover:text-emerald-50 transition-colors duration-200 text-sm">
+                Terms of Service
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        {/* Social Media & Contact */}
+        <div>
+          <h4 className="text-xl font-bold mb-4 font-inter">Connect With Us</h4>
+          <div className="flex justify-center md:justify-start space-x-4 mb-4">
+            {/* Facebook */}
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-emerald-200 hover:text-emerald-50 transition-colors duration-200">
+              <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-6 h-6" viewBox="0 0 24 24">
+                <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"></path>
+              </svg>
+            </a>
+            {/* Twitter */}
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-emerald-200 hover:text-emerald-50 transition-colors duration-200">
+              <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-6 h-6" viewBox="0 0 24 24">
+                <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"></path>
+              </svg>
+            </a>
+            {/* Instagram */}
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-emerald-200 hover:text-emerald-50 transition-colors duration-200">
+              <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-6 h-6" viewBox="0 0 24 24">
+                <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+                <path d="M16 11.37a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                <path d="M17.5 6.5h.01"></path>
+              </svg>
+            </a>
+          </div>
+          <p className="text-emerald-200 text-sm">
+            Email: info@ecogreenshop.com
+          </p>
+          <p className="text-emerald-200 text-sm mt-1">
+            Phone: +254796515157
+          </p>
+        </div>
+      </div>
+
+      {/* Copyright */}
+      <div className="border-t border-emerald-700 mt-8 pt-8 text-center">
+        <p className="text-emerald-300 text-sm">
+          &copy; {new Date().getFullYear()} Ecogreen Shop. All rights reserved.
+        </p>
+      </div>
+    </footer>
+  );
+};
+
 // Main App component
 function App() {
   return (
     <CartProvider>
-      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-emerald-100 font-inter">
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-emerald-100 font-inter flex flex-col"> {/* Added flex-col to enable footer to push to bottom */}
         <Navbar /> {/* Added the Navbar component */}
         {/* Enhanced Header Section */}
         <header className="relative bg-gradient-to-r from-emerald-700 to-emerald-900 text-white text-center py-16 sm:py-24 px-4 shadow-xl">
@@ -605,7 +691,7 @@ function App() {
           </div>
         </header>
 
-        <main className="container mx-auto grid grid-cols-1 gap-8 sm:gap-10 px-4 py-8"> {/* Adjusted padding-top and bottom padding */}
+        <main className="container mx-auto grid grid-cols-1 gap-8 sm:gap-10 px-4 py-8 flex-grow"> {/* Added flex-grow */}
           <div className="col-span-1">
             <ProductList />
           </div>
@@ -615,6 +701,7 @@ function App() {
         </main>
         <GlobalModal />
         <FloatingWhatsAppButton /> {/* Add the floating WhatsApp button here */}
+        <Footer /> {/* Add the Footer component here */}
       </div>
     </CartProvider>
   );
