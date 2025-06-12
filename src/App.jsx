@@ -534,9 +534,9 @@ const GlobalModal = () => {
 
 // Navbar Component
 const Navbar = () => {
-  const whatsappPhoneNumber = '254796515157';
+  const whatsappPhoneNumber = '254746887291';
   const whatsappMessage = 'Hello, I have a question about your eco-friendly products!';
-  const phoneNumber = '+254796515157';
+  const phoneNumber = '+25446887291';
 
   return (
     <nav className="bg-emerald-800 text-white p-4 sm:px-6 shadow-lg fixed w-full z-10 top-0">
@@ -791,7 +791,7 @@ const Footer = () => {
             Email: info@ecogreenshop.com
           </p>
           <p className="text-emerald-200 text-sm mt-1">
-            Phone: +254796515157
+            Phone: +25446887291
           </p>
         </div>
       </div>
